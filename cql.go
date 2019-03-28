@@ -40,7 +40,6 @@ func (t *Table) Find(query Q, options FindOptions) ([]map[string]interface{}, er
 	if len(values) > 0 {
 		stmt += fmt.Sprintf(" WHERE %s", whereCondition)
 	}
-	fmt.Println(stmt, values)
 	iter := t.Conn.Query(stmt, values...).Iter()
 
 	result := make([]map[string]interface{}, 0)
