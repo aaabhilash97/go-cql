@@ -36,7 +36,7 @@ type Q map[string]interface{}
 func (t *Table) Find(query Q, options FindOptions) ([]map[string]interface{}, error) {
 	stmt := fmt.Sprintf(`SELECT * FROM "%s"`, t.TableName)
 	values := make([]interface{}, 0)
-	whereCondition := parseQuery(query, &values)
+	whereCondition := parseQuery(query["where"].(Q), &values)
 	if len(values) > 0 {
 		stmt += fmt.Sprintf(" WHERE %s", whereCondition)
 	}

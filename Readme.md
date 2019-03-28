@@ -47,7 +47,9 @@ func main() {
 		TableName: "USERS",
 	}
 	result, _ := UserTable.Find(cql.Q{
-		"username": "ok"
+		"where": cql.Q{
+			"username": "ok",
+		},
 	}, cql.FindOptions{})
 	p := User{}
 	cql.BindStruct(&p, result[0])
