@@ -52,8 +52,8 @@ func (t *Table) Find(query Q, options FindOptions) ([]map[string]interface{}, er
 		}
 		result = append(result, row)
 	}
-	if len(result) == 0 {
-		return result, fmt.Errorf("Unknown error or No result found")
+	if err := iter.Close(); err != nil {
+		return nil, err
 	}
 	return result, nil
 }
