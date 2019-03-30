@@ -64,7 +64,7 @@ func main() {
 			},
 		},
 	}
-	result, err := userTable.Find(cql.Q{
+	result, err := userTable.FindOne(cql.Q{
 		"where": cql.Q{
 			"phone": "9895774319",
 			"created_at": cql.Q{
@@ -76,8 +76,10 @@ func main() {
 		ViewID:         1,
 	})
 	p := User{}
-	cql.BindStruct(&p, result[0])
-	fmt.Println(p, result[0])
+	if err != nil {
+		log.Fatal("BOOM")
+	}
+	cql.BindStruct(&p, result)
 }
 
 ```
