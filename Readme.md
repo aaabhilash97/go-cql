@@ -4,7 +4,9 @@ Easy to use wrapper for gocql cassandra driver. Focussing on minimal and easy us
 
 ## Installation
 
+```sh
 go get -u github.com/aaabhilash97/go-cql
+```
 
 ## Features
 
