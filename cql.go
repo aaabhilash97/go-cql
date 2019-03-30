@@ -26,6 +26,18 @@ type Views struct {
 }
 
 // Table for table
+// Example
+//  userTable := &cql.Table{
+//		Conn:      session,
+//		TableName: "USERS",
+//		Model:     &PartnerAPIAuth{},
+//		MaterializedView: []cql.Views{
+//			cql.Views{
+//				Name:   "user_view1",
+//				Select: []string{"phone"},
+//			},
+//		},
+//	}
 type Table struct {
 	Conn             *gocql.Session
 	TableName        string
@@ -54,6 +66,14 @@ type InsertIfNotExistsResult struct {
 type Q map[string]interface{}
 
 // Find is used to perform select queries
+//	result, err := userTable.Find(cql.Q{
+//		"where": cql.Q{
+//			"phone": "9895774319",
+//		},
+//	}, cql.QOpt{
+//		AllowFiltering: true,
+//		ViewID:         1,
+//})
 func (t *Table) Find(query Q, options QOpt) ([]map[string]interface{}, error) {
 
 	selectedCol := t.getSelectedColumns(query, options)
