@@ -26,6 +26,7 @@ type Views struct {
 }
 
 // Table for cassandra table
+//
 // Example
 //  userTable := &cql.Table{
 //		Conn:      session,
