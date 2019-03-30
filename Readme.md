@@ -26,7 +26,7 @@ import (
 
 type User struct {
 	Username string
-	Email      string
+	Email      string `cql:"column=email"`
 	password   string
 	DeletedAt   *time.Time
 }
@@ -42,15 +42,25 @@ func main() {
 	session, _ := cluster.CreateSession()
 	defer session.Close()
 
-	UserTable := &cql.Table{
+	userTable := &cql.Table{
 		Conn:      session,
 		TableName: "USERS",
-	}
-	result, _ := UserTable.Find(cql.Q{
-		"where": cql.Q{
-			"username": "ok",
+		Model:     &PartnerAPIAuth{},
+		MaterializedView: []cql.Views{
+			cql.Views{
+				Name:   "user_view1",
+				Select: []string{"phone"},
+			},
 		},
-	}, cql.FindOptions{})
+	}
+	result, err := userTable.Find(cql.Q{
+		"where": cql.Q{
+			"phone": "9895774319",
+		},
+	}, cql.QOpt{
+		AllowFiltering: true,
+		ViewID:         1,
+	})
 	p := User{}
 	cql.BindStruct(&p, result[0])
 	fmt.Println(p, result[0])
