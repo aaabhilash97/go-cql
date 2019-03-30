@@ -12,6 +12,7 @@ go get -u github.com/aaabhilash97/go-cql
 
 - Building query using map
 - Binding result to struct
+- Support for materialized view query, LIMIT, ALLOW FILTERING
 
 ## Example
 
