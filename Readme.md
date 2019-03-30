@@ -67,6 +67,9 @@ func main() {
 	result, err := userTable.Find(cql.Q{
 		"where": cql.Q{
 			"phone": "9895774319",
+			"created_at": cql.Q{
+				"gte": 125663331
+			}
 		},
 	}, cql.QOpt{
 		AllowFiltering: true,
