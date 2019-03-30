@@ -10,8 +10,8 @@ go get -u github.com/aaabhilash97/go-cql
 
 ## Features
 
-Building query using map
-Binding result to struct
+- Building query using map
+- Binding result to struct
 
 ## Example
 
