@@ -8,6 +8,10 @@ Easy to use wrapper for gocql cassandra driver. Focussing on minimal and easy us
 go get -u github.com/aaabhilash97/go-cql
 ```
 
+## Documentation
+
+GoDoc: https://godoc.org/github.com/aaabhilash97/go-cql
+
 ## Features
 
 - Building query using map
