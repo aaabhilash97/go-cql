@@ -33,7 +33,8 @@ type User struct {
 	DeletedAt   *time.Time
 }
 
-func main() {
+var session *gocql.Session
+func init(){
 	cluster := gocql.NewCluster("127.0.0.1")
 	cluster.Keyspace = "db_local"
 	cluster.Authenticator = gocql.PasswordAuthenticator{
@@ -42,6 +43,9 @@ func main() {
 	}
 	cluster.Consistency = gocql.Quorum
 	session, _ := cluster.CreateSession()
+}
+
+func main() {
 	defer session.Close()
 
 	userTable := &cql.Table{
