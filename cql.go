@@ -120,6 +120,26 @@ func (t *Table) Find(query Q, options QOpt) ([]map[string]interface{}, error) {
 	return result, nil
 }
 
+// FindOne is used to perform get one result
+//	result, err := userTable.Find(cql.Q{
+//		"where": cql.Q{
+//			"phone": "9895774319",
+//		},
+//	}, cql.QOpt{
+//		AllowFiltering: true,
+//		ViewID:         1,
+//})
+func (t *Table) FindOne(query Q, options QOpt) (map[string]interface{}, error) {
+	options.Limit = 1
+	result, err := t.Find(query, options)
+	if err != nil {
+		return nil, err
+	} else if len(result) == 0 {
+		return nil, fmt.Errorf("No matching records")
+	}
+	return result[0], nil
+}
+
 func (t *Table) getSelectedColumns(query Q, options QOpt) string {
 	selects, ok := query["select"].([]string)
 	if !ok {
