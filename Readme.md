@@ -1,6 +1,7 @@
 # go-cql
 
-Easy to use wrapper for gocql cassandra driver. Focussing on minimal and easy usages.
+Easy to use wrapper for gocql cassandra driver.
+Focussing on minimal and easy usage.
 
 ## Installation
 
