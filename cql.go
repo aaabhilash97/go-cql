@@ -47,7 +47,7 @@ type InsertIfNotExistsResult struct {
 // Q is Query type a shortcut for map[string]interface{}
 type Q map[string]interface{}
 
-// Find is used to perform different select queries
+// Find is used to perform select queries
 func (t *Table) Find(query Q, options QOpt) ([]map[string]interface{}, error) {
 
 	selectedCol := t.getSelectedColumns(query, options)
