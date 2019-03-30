@@ -25,7 +25,7 @@ type Views struct {
 	Select       []string
 }
 
-// Table for table
+// Table for cassandra table
 // Example
 //  userTable := &cql.Table{
 //		Conn:      session,
