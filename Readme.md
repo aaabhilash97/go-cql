@@ -42,7 +42,7 @@ func init(){
 		Password: "db_password",
 	}
 	cluster.Consistency = gocql.Quorum
-	session, _ := cluster.CreateSession()
+	session, _ = cluster.CreateSession()
 }
 
 func main() {
