@@ -95,7 +95,7 @@ func (t *Table) Find(query Q, options QOpt) ([]map[string]interface{}, error) {
 		stmt += fmt.Sprintf(" WHERE %s", whereCondition)
 	}
 	if options.Limit > 0 {
-		stmt += fmt.Sprintf(" %d LIMIT", options.Limit)
+		stmt += fmt.Sprintf(" LIMIT %d", options.Limit)
 	}
 	if options.AllowFiltering {
 		stmt += " ALLOW FILTERING"
