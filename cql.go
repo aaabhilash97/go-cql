@@ -52,6 +52,7 @@ type QOpt struct {
 	Limit          int
 	View           string
 	ViewID         int
+	BindTo         interface{}
 }
 
 // InsertIfNotExistsResult is response for insert if not exists true
@@ -134,5 +135,6 @@ func (t *Table) FindOne(query Q, options QOpt) (map[string]interface{}, error) {
 	} else if len(result) == 0 {
 		return nil, fmt.Errorf("No matching records")
 	}
+	BindStruct(options.BindTo, result[0])
 	return result[0], nil
 }
