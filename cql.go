@@ -14,6 +14,16 @@ var operators = map[string]string{
 	"$lte": "<=",
 }
 
+// Error is error from CQL
+type Error struct {
+	Msg  string
+	Code int
+}
+
+func (e *Error) Error() string {
+	return fmt.Sprintf("CQL ERROR: %s", e.Msg)
+}
+
 // Views is for materialized views
 type Views struct {
 	Name         string
@@ -113,7 +123,7 @@ func (t *Table) Find(query Q, options QOpt) ([]map[string]interface{}, error) {
 		result = append(result, row)
 	}
 	if err := iter.Close(); err != nil {
-		return nil, err
+		return nil, &Error{err.Error(), UnknownError}
 	}
 	return result, nil
 }
@@ -125,15 +135,15 @@ func (t *Table) Find(query Q, options QOpt) ([]map[string]interface{}, error) {
 //		},
 //	}, cql.QOpt{
 //		AllowFiltering: true,
-//		ViewID:         1,
-//})
+//		ViewID: 1,
+//	})
 func (t *Table) FindOne(query Q, options QOpt) (map[string]interface{}, error) {
 	options.Limit = 1
 	result, err := t.Find(query, options)
 	if err != nil {
 		return nil, err
 	} else if len(result) == 0 {
-		return nil, fmt.Errorf("No matching records")
+		return nil, &Error{"No Matching Row", NoMatchingRow}
 	}
 	BindStruct(options.BindTo, result[0])
 	return result[0], nil
