@@ -2,6 +2,7 @@ package cql
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/gocql/gocql"
 )
@@ -147,4 +148,35 @@ func (t *Table) FindOne(query Q, options QOpt) (map[string]interface{}, error) {
 	}
 	BindStruct(options.BindTo, result[0])
 	return result[0], nil
+}
+
+// InsertIfNotExists is used to to insert row if not exists
+func (t *Table) InsertIfNotExists(input map[string]interface{}, tableName string) (*InsertIfNotExistsResult, error) {
+	stmt := fmt.Sprintf(`INSERT INTO "%s"`, tableName)
+	columns := ""
+	values := []interface{}{}
+	for key, value := range input {
+		values = append(values, value)
+		columns += `"` + key + `"` + ","
+	}
+	columns = strings.Trim(columns, ",")
+	stmt += " (" + columns + ") "
+	stmt += "VALUES("
+	for range values {
+		stmt += "?,"
+	}
+	stmt = strings.Trim(stmt, ",")
+	stmt += ") IF NOT EXISTS"
+	result := make(map[string]interface{})
+
+	applied, err := t.Conn.Query(
+		stmt,
+		values...).MapScanCAS(result)
+	if err != nil {
+		return nil, err
+	}
+	return &InsertIfNotExistsResult{
+		Applied: applied,
+		Result:  result,
+	}, nil
 }
