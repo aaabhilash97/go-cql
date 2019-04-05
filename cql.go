@@ -146,7 +146,9 @@ func (t *Table) FindOne(query Q, options QOpt) (map[string]interface{}, *Error) 
 	} else if len(result) == 0 {
 		return nil, &Error{"No Matching Row", NoMatchingRow}
 	}
-	BindStruct(options.BindTo, result[0])
+	if options.BindTo != nil {
+		BindStruct(options.BindTo, result[0])
+	}
 	return result[0], nil
 }
 
