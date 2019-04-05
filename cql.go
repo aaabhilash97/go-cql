@@ -138,11 +138,11 @@ func (t *Table) Find(query Q, options QOpt) ([]map[string]interface{}, error) {
 //		AllowFiltering: true,
 //		ViewID: 1,
 //	})
-func (t *Table) FindOne(query Q, options QOpt) (map[string]interface{}, error) {
+func (t *Table) FindOne(query Q, options QOpt) (map[string]interface{}, *Error) {
 	options.Limit = 1
 	result, err := t.Find(query, options)
 	if err != nil {
-		return nil, err
+		return nil, &Error{err.Error(), UnknownError}
 	} else if len(result) == 0 {
 		return nil, &Error{"No Matching Row", NoMatchingRow}
 	}
