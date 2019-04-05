@@ -151,7 +151,7 @@ func (t *Table) FindOne(query Q, options QOpt) (map[string]interface{}, error) {
 }
 
 // Insert is used to to insert row if not exists
-func (t *Table) Insert(input map[string]interface{}) (*InsertIfNotExistsResult, error) {
+func (t *Table) Insert(input map[string]interface{}) (bool, error) {
 	stmt := fmt.Sprintf(`INSERT INTO "%s"`, t.TableName)
 	columns := ""
 	values := []interface{}{}
@@ -167,16 +167,12 @@ func (t *Table) Insert(input map[string]interface{}) (*InsertIfNotExistsResult, 
 	}
 	stmt = strings.Trim(stmt, ",")
 	stmt += ")"
-	result := make(map[string]interface{})
 
-	applied, err := t.Conn.Query(
+	err := t.Conn.Query(
 		stmt,
-		values...).MapScanCAS(result)
+		values...).Exec()
 	if err != nil {
-		return nil, err
+		return false, err
 	}
-	return &InsertIfNotExistsResult{
-		Applied: applied,
-		Result:  result,
-	}, nil
+	return true, nil
 }
