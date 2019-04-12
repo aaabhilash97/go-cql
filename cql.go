@@ -13,6 +13,7 @@ var operators = map[string]string{
 	"$gt":  ">",
 	"$lt":  "<",
 	"$lte": "<=",
+	"$in":  "IN",
 }
 
 // Error is error from CQL
@@ -115,6 +116,7 @@ func (t *Table) Find(query Q, options QOpt) ([]map[string]interface{}, error) {
 	if options.AllowFiltering {
 		stmt += " ALLOW FILTERING"
 	}
+	fmt.Println(">>>>>>>>>>>>>>>>>>>>>>>>>>>", stmt)
 	iter := t.Conn.Query(stmt, values...).Iter()
 
 	result := make([]map[string]interface{}, 0)

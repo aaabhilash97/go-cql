@@ -84,6 +84,14 @@ func parseQuery(q Q, values *[]interface{}) string {
 		if key == "$eq" || key == "$gt" || key == "$gte" || key == "$lt" || key == "$lte" {
 			*values = append(*values, value)
 			cur += fmt.Sprintf("%s?", operators[key])
+		} else if key == "$in" {
+			cur += fmt.Sprintf("%s (", operators[key])
+			for _, val := range value.([]interface{}) {
+				*values = append(*values, val)
+				cur += "?,"
+			}
+			cur = strings.Trim(cur, ",")
+			cur += ")"
 		} else if newQ, ok := value.(Q); ok {
 			next := parseQuery(newQ, values)
 			next = strings.Trim(next, " AND")
