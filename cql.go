@@ -22,6 +22,9 @@ type Error struct {
 }
 
 func (e *Error) Error() string {
+	if e == nil {
+		return ""
+	}
 	return fmt.Sprintf("CQL ERROR: %s", e.Msg)
 }
 
