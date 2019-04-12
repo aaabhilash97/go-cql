@@ -116,7 +116,6 @@ func (t *Table) Find(query Q, options QOpt) ([]map[string]interface{}, error) {
 	if options.AllowFiltering {
 		stmt += " ALLOW FILTERING"
 	}
-	fmt.Println(">>>>>>>>>>>>>>>>>>>>>>>>>>>", stmt)
 	iter := t.Conn.Query(stmt, values...).Iter()
 
 	result := make([]map[string]interface{}, 0)
@@ -151,7 +150,7 @@ func (t *Table) FindOne(query Q, options QOpt) (map[string]interface{}, *Error) 
 	} else if len(result) == 0 {
 		return nil, &Error{"No Matching Row", NoMatchingRow}
 	}
-	if options.BindTo != nil {
+	if len(result) > 0 && options.BindTo != nil {
 		BindStruct(options.BindTo, result[0])
 	}
 	return result[0], nil
