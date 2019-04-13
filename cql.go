@@ -16,13 +16,13 @@ var operators = map[string]string{
 	"$in":  "IN",
 }
 
-// Error is error from CQL
-type Error struct {
+// CError is error from CQL
+type CError struct {
 	Msg  string
 	Code int
 }
 
-func (e *Error) Error() string {
+func (e *CError) Error() string {
 	if e == nil {
 		return ""
 	}
@@ -128,7 +128,7 @@ func (t *Table) Find(query Q, options QOpt) ([]map[string]interface{}, error) {
 		result = append(result, row)
 	}
 	if err := iter.Close(); err != nil {
-		return nil, &Error{err.Error(), UnknownError}
+		return nil, &CError{err.Error(), UnknownError}
 	}
 	return result, nil
 }
@@ -142,13 +142,13 @@ func (t *Table) Find(query Q, options QOpt) ([]map[string]interface{}, error) {
 //		AllowFiltering: true,
 //		ViewID: 1,
 //	})
-func (t *Table) FindOne(query Q, options QOpt) (map[string]interface{}, *Error) {
+func (t *Table) FindOne(query Q, options QOpt) (map[string]interface{}, *CError) {
 	options.Limit = 1
 	result, err := t.Find(query, options)
 	if err != nil {
-		return nil, &Error{err.Error(), UnknownError}
+		return nil, &CError{err.Error(), UnknownError}
 	} else if len(result) == 0 {
-		return nil, &Error{"No Matching Row", NoMatchingRow}
+		return nil, &CError{"No Matching Row", NoMatchingRow}
 	}
 	if len(result) > 0 && options.BindTo != nil {
 		BindStruct(options.BindTo, result[0])
